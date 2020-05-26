@@ -46,10 +46,10 @@ public class EmployeesCreateServlet extends HttpServlet {
             e.setName(request.getParameter("name"));
             e.setPassword(
                     EncryptUtil.getPasswordEncrypt(
-                    request.getParameter("password"),
-                    (String)this.getServletContext().getAttribute("salt")
-                    )
-            );
+                           request.getParameter("password"),
+                           (String)this.getServletContext().getAttribute("salt")
+                           )
+                    );
         e.setAdmin_flag(Integer.parseInt(request.getParameter("admin_flag")));
 
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
@@ -57,7 +57,7 @@ public class EmployeesCreateServlet extends HttpServlet {
         e.setUpdated_at(currentTime);
         e.setDelete_flag(0);
 
-        List<String> errors = EmployeeValidator.validate(e,  true,  true);
+        List<String> errors = EmployeeValidator.validate(e, true, true);
         if(errors.size() > 0) {
             em.close();
 
