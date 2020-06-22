@@ -11,12 +11,34 @@
         <table id="employee_list">
             <tbody>
                 <tr>
+                    <th>フォロー</th>
                     <th>社員番号</th>
                     <th>氏名</th>
                     <th>操作</th>
                 </tr>
                 <c:forEach var="employee" items="${employees}" varStatus="status">
                     <tr class="row${status.count % 2}">
+                        <td>
+                             <c:choose>
+                                <c:when test="${sessionScope.login_employee.id == employee.id}">
+                                  &nbsp;
+                                </c:when>
+                                <c:when test="${employee.follow_unfollow == 1}">
+                                     <form action="<c:url value='/follows/destroy' />" method="post">
+                                     <input type="hidden" name="followEmployee" value="${employee.id}" />
+                                     <input type="hidden" name="_token" value="${_token}" />
+                                          <button type="submit">フォロー解除</button>
+                                     </form>
+                                </c:when>
+                                <c:otherwise>
+                                     <form action="<c:url value='/follows/create' />" method="post">
+                                        <input type="hidden" name="followEmployee" value="${employee.id}" />
+                                        <input type="hidden" name="_token" value="${_token}" />
+                                          <button type="submit">フォロー</button>
+                                     </form>
+                                </c:otherwise>
+                             </c:choose>
+                         </td>
                         <td><c:out value="${employee.code}" /></td>
                         <td><c:out value="${employee.name}" /></td>
                         <td>
@@ -44,7 +66,7 @@
                     <c:otherwise>
                         <a href="<c:url value='/employees/index?page=${i}' />"><c:out value="${i}" /></a>&nbsp;
                     </c:otherwise>
-                </c:choose>
+                 </c:choose>
             </c:forEach>
         </div>
         <p><a href="<c:url value='/employees/new' />">新規従業員の登録</a></p>

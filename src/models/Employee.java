@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Table(name = "employees")
 @NamedQueries({
@@ -32,6 +33,7 @@ import javax.persistence.Table;
 })
 @Entity
 public class Employee {
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,6 +59,9 @@ public class Employee {
 
     @Column(name = "delete_flag", nullable = false)
     private Integer delete_flag;
+
+    @Transient
+    private Integer follow_unfollow;
 
     public Integer getId() {
         return id;
@@ -120,5 +125,12 @@ public class Employee {
 
     public void setDelete_flag(Integer delete_flag) {
         this.delete_flag = delete_flag;
+    }
+    public Integer getFollow_unfollow() {
+        return follow_unfollow;
+    }
+
+    public void setFollow_unfollow(Integer follow_unfollow) {
+        this.follow_unfollow = follow_unfollow;
     }
 }

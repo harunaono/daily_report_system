@@ -47,11 +47,26 @@ public class EmployeesIndexServlet extends HttpServlet {
         long employees_count = (long)em.createNamedQuery("getEmployeesCount", Long.class)
                                        .getSingleResult();
 
+        Employee loginEmployee = (Employee)request.getSession().getAttribute("login_employee");
+
+        for (Employee emp : employees) {
+            long followCount = (long)em.createNamedQuery("getFollowsCount", Long.class)
+                    .setParameter("employeeId", loginEmployee.getId())
+                    .setParameter("followEmployee", emp)
+                    .getSingleResult();
+            if (followCount > 0) {
+                emp.setFollow_unfollow(1);
+            } else {
+                emp.setFollow_unfollow(0);
+            }
+        }
+
         em.close();
 
         request.setAttribute("employees", employees);
         request.setAttribute("employees_count", employees_count);
         request.setAttribute("page", page);
+        request.setAttribute("_token",  request.getSession().getId());
         if(request.getSession().getAttribute("flush") != null) {
             request.setAttribute("flush", request.getSession().getAttribute("flush"));
             request.getSession().removeAttribute("flush");

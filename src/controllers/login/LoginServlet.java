@@ -55,7 +55,7 @@ public class LoginServlet extends HttpServlet {
 
         String code = request.getParameter("code");
         String plain_pass = request.getParameter("password");
-
+        //Employee型の変数を用意してeと言う変数名をつける（変数の宣言）と同時にその変数にnullを代入
         Employee e = null;
 
         if(code != null && !code.equals("") && plain_pass != null && !plain_pass.equals("")) {
@@ -67,6 +67,8 @@ public class LoginServlet extends HttpServlet {
                     );
          // 社員番号とパスワードが正しいかチェックする
          try {
+             //ログイン画面で入力したユーザ名(code)とパスワード(password)と一致する従業員を
+             //テーブルから取得して対象に従業員データをEmployeeインスタンスにして変数eに代入しています。
              e = em.createNamedQuery("checkLoginCodeAndPassword", Employee.class)
                      .setParameter("code", code)
                      .setParameter("pass", password)
